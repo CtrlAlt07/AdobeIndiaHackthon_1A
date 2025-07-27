@@ -40,8 +40,8 @@ A high-performance PDF outline extractor developed for the **Adobe India Hackath
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/PDF-Outline-Extractor.git
-   cd PDF-Outline-Extractor
+   git clone https://github.com/CtrlAlt07/AdobeIndiaHackthon_1A.git
+   cd AdobeIndiaHackthon_1A
    ```
 
 2. Create and activate a virtual environment:
@@ -62,7 +62,7 @@ A high-performance PDF outline extractor developed for the **Adobe India Hackath
 docker build -t pdf-outline .
 
 # Or pull from Docker Hub (if available)
-docker pull yourusername/pdf-outline:latest
+docker pull CtrlAlt07/pdf-outline:latest
 ```
 
 ## 🛠 Usage
