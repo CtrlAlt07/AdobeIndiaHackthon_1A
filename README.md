@@ -50,8 +50,9 @@ A high-performance PDF outline extractor developed for the **Adobe India Hackath
    source venv/bin/activate  # On Windows: .\venv\Scripts\activate
    ```
 
-3. Install dependencies:
+3. Install dependencies (inside the project sub-folder):
    ```bash
+   cd "Round 1A"  # contains the code, Dockerfile, and pinned requirements
    pip install -r requirements.txt
    ```
 
@@ -59,7 +60,8 @@ A high-performance PDF outline extractor developed for the **Adobe India Hackath
 
 ```bash
 # Build the Docker image
-docker build -t pdf-outline .
+# Build the Docker image (run from repository root)
+docker build -t pdf-outline -f "Round 1A/Dockerfile" "Round 1A"
 
 # Or pull from Docker Hub (if available)
 docker pull CtrlAlt07/pdf-outline:latest
@@ -70,7 +72,8 @@ docker pull CtrlAlt07/pdf-outline:latest
 ### Command Line
 
 ```bash
-# Process all PDFs in the inputs directory
+# Process all PDFs in the inputs directory (run inside Round 1A)
+cd "Round 1A"
 python extractor2.py
 
 # Or specify custom input/output directories
@@ -80,19 +83,27 @@ INPUT_DIR=path/to/inputs OUTPUT_DIR=path/to/outputs python extractor2.py
 ### Docker
 
 ```bash
-# Run with default directories
-docker run --rm \
-  -v "$(pwd)/inputs:/app/inputs" \
-  -v "$(pwd)/outputs:/app/outputs" \
-  pdf-outline
 
-# Or with custom directories
-docker run --rm \
-  -v "/path/to/your/inputs:/app/inputs" \
-  -v "/path/to/your/outputs:/app/outputs" \
-  pdf-outline
+# If you are already *inside* the `Round 1A` folder run **one** of the following:
+
+Linux / macOS:
+```bash
+docker run --rm -v "$(pwd)/inputs:/app/inputs" -v "$(pwd)/outputs:/app/outputs" pdf-outline
 ```
 
+Windows PowerShell:
+```powershell
+docker run --rm -v "${PWD}/inputs:/app/inputs" -v "${PWD}/outputs:/app/outputs" pdf-outline
+```
+
+From the repository root you can also map the sub-folder explicitly (PowerShell example):
+```powershell
+docker run --rm `
+  -e INPUT_DIR=/data/in -e OUTPUT_DIR=/data/out `
+  -v "${PWD}/Round 1A/inputs:/data/in" `
+  -v "${PWD}/Round 1A/outputs:/data/out" `
+  pdf-outline
+```
 ## 📂 Input/Output
 
 ### Input
@@ -161,7 +172,9 @@ For each input PDF (e.g., `document.pdf`), the tool generates a JSON file (e.g.,
 version: '3.8'
 services:
   pdf-extractor:
-    build: .
+    build:
+      context: ./Round 1A
+      dockerfile: Dockerfile
     volumes:
       - ./inputs:/app/inputs
       - ./outputs:/app/outputs
